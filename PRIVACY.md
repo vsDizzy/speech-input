@@ -4,11 +4,13 @@ Speech Input does not collect, store on any server, sell, or share any informati
 
 ## What stays on your computer
 
-- **Settings** are stored in `%LocalAppData%\SpeechInput\data\settings.json`.
-- **Your Gemini API key** is stored in the Windows Credential Locker (`PasswordVault`), which is protected by your Windows account. If the Credential Locker is unavailable, the key is stored in a file encrypted with Windows DPAPI for your user account.
-- **Diagnostics.** If the app crashes, it writes a report to `%LocalAppData%\SpeechInput\data\crash.log`. The report contains only technical details such as error messages and recent app events. It does not contain your recordings or recognized text. The report is never sent anywhere; you can read or delete it at any time.
+Files are kept in the app's `data` folder: `%LocalAppData%\SpeechInput\data` when installed with the setup program, or the `data` folder next to the app when you use the portable version.
 
-Audio from your microphone is processed in memory only while you dictate and is never saved to disk.
+- **Settings** are stored in `settings.json` in the `data` folder.
+- **Your Gemini API key** is stored in the Windows Credential Locker (`PasswordVault`), which is protected by your Windows account. If the Credential Locker is unavailable, the key is stored in a file in the `data` folder, encrypted with Windows DPAPI for your user account. Either way the key works only for your Windows account on this computer: copying the portable folder to another computer carries your settings over, but not the key.
+- **Diagnostics.** If the app crashes, it writes a report to `crash.log` in the `data` folder. The report contains only technical details such as error messages and recent app events. It does not contain your recordings or recognized text. The report is never sent anywhere; you can read or delete it at any time.
+
+Audio from your microphone is held in memory only until it is sent for recognition, then released. It is never saved to disk.
 
 ## What is sent to Google
 
@@ -26,7 +28,7 @@ Nothing is sent to Google unless you start dictation.
 
 ## GDPR
 
-Speech Input is designed to follow the principles of the EU General Data Protection Regulation (GDPR), such as data minimisation and privacy by design. The author does not collect or process any of your personal data, so there is nothing to request, correct, or delete on the author's side. All locally stored data is under your control and is removed when you uninstall the app and delete `%LocalAppData%\SpeechInput`.
+Speech Input is designed to follow the principles of the EU General Data Protection Regulation (GDPR), such as data minimisation and privacy by design. The author does not collect or process any of your personal data, so there is nothing to request, correct, or delete on the author's side. All locally stored data is under your control. Uninstalling the app removes all of it, including the API key. For the portable version, press **Remove** next to the API key in the settings first, then delete the app's folder.
 
 Speech Input has not undergone any formal GDPR certification.
 
