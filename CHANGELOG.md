@@ -1,5 +1,43 @@
 # Changelog
 
+## 0.3.0 — 2026-10-18
+
+### Added
+
+- The **audio.cpp server** model is picked from a drop-down that lists the streaming speech recognition
+  models the server serves, read when the list is opened. With the server stopped the page still opens
+  at once and keeps the model already chosen.
+- A second fully local provider, **audio.cpp server**, streams to an
+  [audio.cpp](https://github.com/0xShug0/audio.cpp) server you start yourself, running Voxtral Mini 4B
+  Realtime. It shows the text live while you speak and keeps Russian and English each in its own alphabet
+  within one sentence ("открыл pull request на review"). It detects the language itself, so the
+  recognition languages in Settings do not apply to it.
+- Clicking the warning mark next to a refused provider setting copies the error text to the clipboard.
+- The Gemini model drop-down lists the Live transcription models your API key can use, loaded from Google
+  when you open it, so new models appear without an app update. Without a key or a connection it keeps the
+  built-in list and says why.
+- Setup scripts for the local recognition servers are now published in
+  [local-servers](https://github.com/vsDizzy/speech-input/tree/main/local-servers): they download the
+  server and its model and start it. The "setup guide" link on the NeMo Speech server and audio.cpp server
+  provider pages leads there.
+- Dictation can run fully on your own PC: the new **NeMo Speech server** provider streams to a
+  [NeMo-Speech.cpp](https://github.com/NVIDIA/NeMo-Speech.cpp) server you start yourself and shows the text
+  live while you speak, with no audio going to a cloud service. It detects the spoken language itself, so
+  the recognition languages in Settings do not apply to it.
+- The **NeMo Speech server** address is set on the provider page of the settings window: type
+  `host:port` or a full `ws://` address, or leave it empty for the default `ws://127.0.0.1:8080`.
+- A **NeMo Speech server** started with an API key works too: paste the same key into "Server API key" on
+  the provider page. A missing or refused key gets its own message with a link to Settings.
+
+### Changed
+
+- The settings window now opens at 800 x 520 and can be resized down to 640 x 400.
+
+### Fixed
+
+- Music paused for dictation now comes back when a new take is started right after the previous one, while
+  its stop sound is still playing. Before, the music stayed paused until started by hand.
+
 ## 0.2.0 — 2026-10-16
 
 ### Changed

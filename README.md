@@ -1,7 +1,8 @@
 # Speech Input
 
 Dictation into any Windows app: hold a hotkey, speak, release — the text is pasted into the active window.
-Speech is recognized by the Gemini Live API. The app lives in the system tray and has no main window.
+Speech is recognized by a provider chosen in Settings, such as the Gemini Live API. The app lives in the
+system tray and has no main window.
 
 ## Features
 
@@ -20,7 +21,13 @@ Speech is recognized by the Gemini Live API. The app lives in the system tray an
 ## Requirements
 
 - Windows 10 1809 or later, x64
-- A [Gemini API key](https://aistudio.google.com/apikey)
+- A [Gemini API key](https://aistudio.google.com/apikey), or another provider set up in Settings → Provider
+
+## Recognition on your own PC
+
+The NeMo Speech server and audio.cpp server providers send audio to a recognition server you run
+yourself, so nothing leaves your network. [local-servers](local-servers/README.md) has a setup for each:
+scripts that download the server and its model, and how to start it.
 
 ## License
 

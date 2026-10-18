@@ -1,0 +1,52 @@
+# Run from this folder after `../download-model-nemotron.ps1` has put the model into ../models.
+# The backend is a Compose profile; set COMPOSE_PROFILES in .env or pass it:
+#   docker compose --profile cuda up -d --build
+name: nemo-speech
+
+x-server: &server
+  # Loopback only: the server speaks plain ws:// without TLS. See README.md before exposing it.
+  ports:
+    - "127.0.0.1:${HOST_PORT:-8080}:8080"
+  # Optional .env carries NEMO_SPEECH_HTTP_API_KEY into the container.
+  env_file:
+    - path: .env
+      required: false
+  restart: unless-stopped
+
+x-nvidia: &nvidia
+  resources:
+    reservations:
+      devices:
+        - driver: nvidia
+          count: all
+          capabilities: [gpu]
+
+services:
+  cpu:
+    <<: *server
+    profiles: [cpu]
+    build: { context: ., args: { BACKEND: cpu } }
+    image: speechinput/nemo-speech:0.2.0-cpu
+    volumes:
+      - ../models:/models:ro
+
+  vulkan:
+    <<: *server
+    profiles: [vulkan]
+    build: { context: ., args: { BACKEND: vulkan } }
+    image: speechinput/nemo-speech:0.2.0-vulkan
+    volumes:
+      - ../models:/models:ro
+      # WSL 2 only: libraries the Dozen driver needs next to /dev/dxg. On a Linux host Docker creates
+      # an empty directory here, which is harmless.
+      - /usr/lib/wsl:/usr/lib/wsl:ro
+    deploy: *nvidia
+
+  cuda:
+    <<: *server
+    profiles: [cuda]
+    build: { context: ., args: { BACKEND: cuda } }
+    image: speechinput/nemo-speech:0.2.0-cuda
+    volumes:
+      - ../models:/models:ro
+    deploy: *nvidia
