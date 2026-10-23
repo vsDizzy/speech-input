@@ -59,4 +59,4 @@ function Install-Runtime([string]$Backend) {
     Write-Host "installed $target"
 }
 
-Export-ModuleMember -Function Get-VerifiedFile, Install-Runtime
+Export-ModuleMember -Function Get-VerifiedFile, Install-Runtime -Variable Version

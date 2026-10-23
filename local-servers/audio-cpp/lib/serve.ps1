@@ -1,10 +1,11 @@
 #Requires -Version 7
 <#
 .SYNOPSIS
-    Runs the audio.cpp server with every streaming model downloaded into ./models: Voxtral Realtime as
-    "voxtral-realtime" (the app provider's default), Nemotron 3.5 ASR as "nemotron-asr" and Confucius4-R2T2
-    as "confucius-r2t2". The client picks one by id. Called by serve-vulkan.ps1 / serve-cuda.ps1, which pass
-    their other arguments here.
+    Runs the audio.cpp server with every model downloaded into ./models. Streaming, for the live endpoint:
+    Voxtral Realtime as "voxtral-realtime" (the app provider's default), Nemotron 3.5 ASR as "nemotron-asr",
+    Confucius4-R2T2 as "confucius-r2t2" and Parakeet TDT v3 as "parakeet". Offline, for whole recordings:
+    Qwen3-ASR as "qwen3-asr" and Parakeet as "parakeet-offline". The client picks one by id. Called by
+    serve-vulkan.ps1 / serve-cuda.ps1, which pass their other arguments here.
 #>
 param(
     [Parameter(Mandatory)]
@@ -17,6 +18,12 @@ param(
 
     [ValidateSet('q8_0', 'f16')]
     [string]$NemotronModel,
+
+    [ValidateSet('q8_0', 'f16')]
+    [string]$QwenModel,
+
+    [ValidateSet('q8_0', 'f16')]
+    [string]$ParakeetModel,
 
     [string]$BindAddress = '127.0.0.1',
 
@@ -32,7 +39,17 @@ param(
     # show words sooner at more GPU work per second. On a GTX 960 only 2000 keeps up with real time
     # (upstream's default is 320).
     [ValidateRange(80, 2000)]
-    [int]$ConfuciusChunkMs = 2000
+    [int]$ConfuciusChunkMs = 2000,
+
+    # Qwen3-ASR only. How a recording is split before decoding: vad at pauses (Silero), fixed at every
+    # 30 s, none not at all.
+    [ValidateSet('vad', 'fixed', 'none')]
+    [string]$QwenChunkMode = 'vad',
+
+    # Parakeet streaming only. It re-encodes a window of past context + step + lookahead every step, so text
+    # comes every step, step + lookahead after it was spoken.
+    [double]$ParakeetStepSec = 1,
+    [double]$ParakeetLookaheadSec = 1
 )
 
 $ErrorActionPreference = 'Stop'
@@ -65,6 +82,45 @@ $families = @(
         Download = './download-model-confucius.ps1'
         Options  = @{ 'confucius4_r2t2.chunk_size_ms' = $ConfuciusChunkMs }
     }
+    @{
+        Id       = 'qwen3-asr'
+        Family   = 'qwen3_asr'
+        Mode     = 'offline'
+        Models   = @('q8_0', 'f16')
+        Pick     = $QwenModel
+        File     = 'qwen3-asr-1.7b-{0}.gguf'
+        Download = './download-model-qwen3-offline.ps1 -Model {0}'
+        Options  = @{ 'qwen3_asr.vad_model_path' = (Join-Path $root 'models/silero_vad') }
+        # Clients of the OpenAI-style endpoint send no audio.cpp options; per-model defaults set them.
+        Request  = @{ audio_chunk_mode = $QwenChunkMode }
+    }
+    @{
+        Id       = 'parakeet'
+        Family   = 'parakeet_tdt'
+        Models   = @('q8_0', 'f16')
+        Pick     = $ParakeetModel
+        File     = 'parakeet-tdt-0.6b-v3-{0}.gguf'
+        Download = './download-model-parakeet.ps1 -Model {0}'
+        Options  = @{
+            'parakeet_tdt.audio_chunk_duration_sec' = $ParakeetStepSec
+            'parakeet_tdt.right_context_sec'        = $ParakeetLookaheadSec
+        }
+    }
+    @{
+        Id       = 'parakeet-offline'
+        Family   = 'parakeet_tdt'
+        Mode     = 'offline'
+        Models   = @('q8_0', 'f16')
+        Pick     = $ParakeetModel
+        File     = 'parakeet-tdt-0.6b-v3-{0}.gguf'
+        Download = './download-model-parakeet.ps1 -Model {0}'
+        # The whole recording is encoded at once (~5x faster than windows) up to 2 min; at 3 min that no
+        # longer fits a 4 GB GPU, so longer ones run in overlapping windows.
+        Options  = @{
+            'parakeet_tdt.offline_mode'              = 'auto'
+            'parakeet_tdt.audio_chunk_threshold_sec' = 120
+        }
+    }
 )
 
 $exe = Join-Path $root "runtime/$Backend/audiocpp_server.exe"
@@ -83,12 +139,13 @@ $models = foreach ($spec in $families) {
     }
     Write-Host "serve     $($spec.Id)  $(Split-Path -Leaf $path)"
     [ordered]@{
-        id              = $spec.Id
-        family          = $spec.Family
-        path            = (Resolve-Path $path).Path
-        task            = 'asr'
-        mode            = 'streaming'
-        session_options = $spec.Options
+        id                      = $spec.Id
+        family                  = $spec.Family
+        path                    = (Resolve-Path $path).Path
+        task                    = 'asr'
+        mode                    = $spec.Mode ?? 'streaming'
+        session_options         = $spec.Options
+        default_request_options = $spec.Request ?? @{}
     }
 }
 if (-not $models) { throw 'No model downloaded. Run one of ./download-model-*.ps1' }

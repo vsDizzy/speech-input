@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.4.0 — 2026-10-23
+
+### Added
+
+- A new provider, **OpenAI-compatible server**, sends each take as a whole recording to any server that
+  speaks OpenAI's transcription API: the local [audio.cpp](https://github.com/0xShug0/audio.cpp) server with
+  Qwen3-ASR 1.7B, which keeps every word of a minute-long take in Russian and English, or whisper.cpp,
+  Speaches, vLLM and OpenAI itself. The text is typed when the server finishes; there is no live text while
+  you speak. An optional API key is sent to servers that need one.
+
+### Fixed
+
+- An app several versions behind now updates with small patches, one per missed version, instead of
+  downloading the whole ~100 MB package again.
+- On first start the recognition languages are taken from your keyboard layouts even when the default
+  provider has no language choice, so switching to one that does no longer shows an empty list.
+- Opening and closing Settings no longer makes the app use more memory each time, and the app no longer
+  crashes after Settings has been opened many times.
+
 ## 0.3.0 — 2026-10-18
 
 ### Added
