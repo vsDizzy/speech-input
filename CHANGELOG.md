@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.1 — 2026-10-25
+
+### Changed
+
+- Phrases on the card now expire after 5 minutes: opening the card shows only recent dictation, or the
+  invitation when everything is older.
+
+### Fixed
+
+- With Gemini, releasing the hotkey mid-word no longer sometimes holds the text back for about 6 seconds
+  before it is inserted.
+
 ## 0.4.0 — 2026-10-23
 
 ### Added
