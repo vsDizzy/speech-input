@@ -8,8 +8,8 @@ system tray and has no main window.
 
 - **Hold-to-talk hotkey.** Default is Ctrl + Shift; a single key or a chord of up to three keys can be
   recorded in Settings, and left/right modifiers are told apart.
-- **Live transcript card.** A small acrylic card shows the text while you speak and keeps the last three
-  phrases with a Copy button each.
+- **Live transcript card.** A small acrylic card shows the text while you speak and keeps the phrases
+  of the last five minutes with a Copy button each.
 - **Pastes into the focused app.** Uses the clipboard and Ctrl+V, then restores the previous clipboard.
 - **Quiet room.** Media that is playing pauses while you dictate and resumes afterwards.
 - **Echo cancellation.** Uses the Windows audio engine, so audio playing on your speakers is not transcribed.

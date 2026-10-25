@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.2 — 2026-10-25
+
+### Changed
+
+- The transcript card's title bar is now translucent like the rest of the card, with a dimmed title and a smaller close button.
+- The transcript card keeps every phrase of the last five minutes instead of only the last three.
+
 ## 0.4.1 — 2026-10-25
 
 ### Changed
