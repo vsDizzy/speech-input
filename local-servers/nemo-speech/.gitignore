@@ -1,6 +1,0 @@
-# Downloaded by the scripts, never committed.
-runtime/
-models/
-*.part
-
-.env

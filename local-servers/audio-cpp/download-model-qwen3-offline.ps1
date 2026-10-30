@@ -19,11 +19,11 @@ Import-Module (Join-Path $PSScriptRoot 'lib/Download.psm1') -Force
 
 # audio-cpp/audio.cpp-gguf at this revision; the GGUF embeds config, processor config and tokenizer.
 $ModelRepo = 'audio-cpp/audio.cpp-gguf'
-$ModelRevision = '235f70e17d42a43ff234d29059d4f57393db4bff'
+$ModelRevision = '874fcb41ececda20bcbc0782d6b4ea7f7d069ea8'
 $ModelFolder = 'Qwen3-ASR-1.7B-GGUF'
 $ModelSha256 = @{
-    'q8_0' = 'da4fc2ac7f24dee784d1684eb1f35836cdbf559519452ae11777670734c0a4f8'
-    'f16'  = 'f12537d4ea56df4e1dcca64a902e0b37fb1111f8ef7fc8e554fd00110be047d0'
+    'q8_0' = '3bc2462eca3a3a8f56abcd860d0943ffdc0546547dde55a9d08589607d6f3936'
+    'f16'  = '59baf62f2454a1b4d1d9ffed730dbf1d0bce28ed6fec30897de17f9d6d452fc3'
 }
 
 # The release archives leave out upstream's assets/framework/models, where the model spec looks for it.

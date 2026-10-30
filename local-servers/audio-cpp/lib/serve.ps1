@@ -27,7 +27,6 @@ param(
 
     [string]$BindAddress = '127.0.0.1',
 
-    # 8080 is the NeMo Speech server's, so both can run at once.
     [int]$Port = 8081,
 
     # Voxtral only. Encoder steps decoded together: fewer GPU round trips, each word up to n x 80 ms

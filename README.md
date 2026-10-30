@@ -25,9 +25,9 @@ system tray and has no main window.
 
 ## Recognition on your own PC
 
-The NeMo Speech server and audio.cpp server providers send audio to a recognition server you run
-yourself, so nothing leaves your network. [local-servers](local-servers/README.md) has a setup for each:
-scripts that download the server and its model, and how to start it.
+The audio.cpp server and OpenAI-compatible server providers send audio to a recognition server you run
+yourself, so nothing leaves your network. [local-servers](local-servers/README.md) has the setup:
+scripts that download the server and its models, and how to start it.
 
 ## License
 

@@ -1,6 +1,6 @@
 # audio.cpp server
 
-A local [audio.cpp](https://github.com/0xShug0/audio.cpp) 0.9.2 server for the app's **audio.cpp server**
+A local [audio.cpp](https://github.com/0xShug0/audio.cpp) 0.9.3 server for the app's **audio.cpp server**
 provider, with any of the streaming models Voxtral Mini 4B Realtime, Nemotron 3.5 ASR Streaming 0.6B,
 Confucius4-R2T2 and Parakeet TDT 0.6B v3, and for the app's **OpenAI-compatible server** provider, or any
 other client of the OpenAI-style `/v1/audio/transcriptions` endpoint, with the offline models Qwen3-ASR 1.7B
@@ -23,7 +23,7 @@ Vulkan driver, Maxwell (GTX 900) included. `download-cuda.ps1` / `serve-cuda.ps1
 build with its CUDA DLLs (~850 MB): Turing (RTX 20) or newer; not run here.
 
 The server serves every model found in `models/`: Voxtral as `voxtral-realtime` (the provider's default
-model id), Nemotron as `nemotron-asr`, the same model the NeMo Speech server runs, and Confucius4-R2T2 as
+model id), Nemotron as `nemotron-asr`, and Confucius4-R2T2 as
 `confucius-r2t2`, all with `"mode": "streaming"` in `/v1/models`; Qwen3-ASR as `qwen3-asr` with
 `"mode": "offline"`. Parakeet is served twice from one file: `parakeet` (streaming) and `parakeet-offline`.
 The app lists them from `/v1/models` and the client picks one per request. Only one

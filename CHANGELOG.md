@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.0 — 2026-10-30
+
+### Removed
+
+- The NeMo Speech server provider is gone: the audio.cpp server runs the same Nemotron 3.5 model, alongside
+  Voxtral Realtime, Parakeet and Qwen3-ASR.
+
+### Fixed
+
+- Dictation recovers by itself after the Windows audio system stops responding: the take that hit it says
+  so instead of blaming the microphone, and the next take records without restarting SpeechInput. The
+  microphone list in Settings shows an error instead of hanging when Windows audio does not answer.
+- With Gemini, a take no longer hangs for about 6 seconds before its text is inserted when Gemini never
+  confirms the last phrase; the text goes in about 1.5 seconds after Gemini stops sending updates.
+
 ## 0.4.2 — 2026-10-25
 
 ### Changed

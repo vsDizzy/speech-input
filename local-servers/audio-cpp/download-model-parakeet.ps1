@@ -18,11 +18,11 @@ Import-Module (Join-Path $PSScriptRoot 'lib/Download.psm1') -Force
 
 # audio-cpp/audio.cpp-gguf at this revision; the GGUF embeds config, processor config and tokenizer.
 $ModelRepo = 'audio-cpp/audio.cpp-gguf'
-$ModelRevision = '661a224e9d9adbd49c01626f85e426f5f425d771'
+$ModelRevision = '874fcb41ececda20bcbc0782d6b4ea7f7d069ea8'
 $ModelFolder = 'Parakeet-TDT-0.6B-v3-GGUF'
 $ModelSha256 = @{
-    'q8_0' = '074e61ac1abd3d3efcfc10798d17bf9a975b31768b466fc2578364d206dde64c'
-    'f16'  = '83622c44275694039e543e135ac91b40d94f48fc80a1bf187b5a1cbcd5dd8649'
+    'q8_0' = '6fa498f10f8cb606f041aa9512733cfee842a932359b00b0c45b9b723c4f4f4b'
+    'f16'  = '1720770887bbb6ae633b3375c6ce4b76b3eaff9cd4efd7b890db734cc0adfe80'
 }
 
 $file = "parakeet-tdt-0.6b-v3-$Model.gguf"
